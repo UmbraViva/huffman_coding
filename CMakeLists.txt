@@ -9,4 +9,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 add_executable(huffman_coding main.cpp
         Node.cpp
         Node.h
+        huffman.h
+        huffman.cpp
 )
