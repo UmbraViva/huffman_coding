@@ -1,9 +1,8 @@
-#include <iostream>
-#include <set>
-#include <fstream>
-
 #include "Node.h"
 #include "huffman.h"
+#include <fstream>
+#include <iostream>
+#include <set>
 
 int main(int argc, char *argv[]) {
     std::ifstream inputFile(argv[1]);
@@ -23,6 +22,7 @@ int main(int argc, char *argv[]) {
     }
     const std::vector ordered_letters(letters.begin(), letters.end());
 
+    // Generates tree based on queue
     std::priority_queue<std::unique_ptr<Node>,
                         std::vector<std::unique_ptr<Node>>, CompareNode>
         queue = Huffman::generate_queue(ordered_letters, inputFile);
@@ -30,30 +30,8 @@ int main(int argc, char *argv[]) {
     Huffman::generate_tree(queue);
 
     // Travereses the tree and stores nodes in a map
-    // const std::unique_ptr<Node> &root = queue.top();
-    // std::unique_ptr<Node> current_node;
-    // std::string key = "";
-    // std::map<char, std::string> encodeing_key;
-
-    // for (int i = 0; i < root->getCharacter().length(); i++) {
-    //     char character = root->getCharacter()[i];
-
-    //    if (root->getLeft() != nullptr || root->getRight() != nullptr) {
-
-    //        if (root->getLeft()->getCharacter().find(character) !=
-    //            std::string::npos) {
-    //            key.push_back('0');
-    //            current_node = std::move(root->getLeft());
-    //        }
-    //        if (root->getRight()->getCharacter().find(character) !=
-    //            std::string::npos) {
-    //            key.push_back('1');
-    //            current_node = std::move(root->getRight());
-    //        }
-    //    } else {
-    //        key = "";
-    //    }
-    //}
+    const std::unique_ptr<Node> &root = queue.top();
+    std::map<char, int> encoding_map = Huffman::traverse_tree(root);
 
     return 0;
 }

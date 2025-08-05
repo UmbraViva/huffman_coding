@@ -1,5 +1,6 @@
-#include <fstream>
 #include "huffman.h"
+#include <fstream>
+#include <map>
 
 std::priority_queue<std::unique_ptr<Node>, std::vector<std::unique_ptr<Node>>,
                     CompareNode>
@@ -33,7 +34,8 @@ Huffman::generate_queue(const std::vector<std::string> &letters,
 
 void Huffman::generate_tree(
     std::priority_queue<std::unique_ptr<Node>,
-                        std::vector<std::unique_ptr<Node>>, CompareNode> &queue) {
+                        std::vector<std::unique_ptr<Node>>, CompareNode>
+        &queue) {
     while (queue.size() > 1) {
 
         // Copies the lowest weighted nodes and takes them off the queue
@@ -69,5 +71,34 @@ void Huffman::generate_tree(
         // Puts the new node back into the queue
         queue.push(std::move(new_node));
     }
+}
 
+std::map<char, int>
+Huffman::traverse_tree(const std::unique_ptr<Node> &rootNode) {
+    std::map<char, int> encoding_map;
+
+    // Helper function to recursively traverse the tree
+    std::function<void(const std::unique_ptr<Node> &, int, int)> traverse =
+        [&](const std::unique_ptr<Node> &node, int code, int depth) {
+            if (!node)
+                return;
+
+            // If this is a leaf node (has a single character)
+            if (node->getCharacter().length() == 1) {
+                encoding_map[node->getCharacter()[0]] = code;
+                return;
+            }
+
+            // Traverse left (0 bit) and right (1 bit) children
+            // Shift code left by 1 bit and add 0 for left, 1 for right
+            traverse(node->getLeft(), code << 1, depth + 1);
+            traverse(node->getRight(), (code << 1) | 1, depth + 1);
+        };
+
+    // Start traversal from root with empty code
+    if (rootNode) {
+        traverse(rootNode, 0, 0);
+    }
+
+    return encoding_map;
 }

@@ -7,9 +7,9 @@ Node::Node(const std::string &character, const int count) {
     this->right = nullptr;
 }
 
-Node::Node(const std::string &character, const int count, std::unique_ptr<Node> left, std::unique_ptr<Node> right) :
-    left(std::move(left)),
-    right(std::move(right)) {
+Node::Node(const std::string &character, const int count,
+           std::unique_ptr<Node> left, std::unique_ptr<Node> right)
+    : left(std::move(left)), right(std::move(right)) {
     this->character = character;
     this->count = count;
 }
@@ -26,11 +26,11 @@ void Node::updateCount() {
     return this->character;
 }
 
-[[nodiscard]] std::unique_ptr<Node>& Node::getLeft() {
+[[nodiscard]] std::unique_ptr<Node> &Node::getLeft() {
     return left;
 }
 
-[[nodiscard]] std::unique_ptr<Node>& Node::getRight() {
+[[nodiscard]] std::unique_ptr<Node> &Node::getRight() {
     return right;
 }
 
