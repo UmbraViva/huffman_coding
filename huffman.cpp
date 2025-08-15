@@ -1,5 +1,6 @@
 #include "huffman.h"
 #include <fstream>
+#include <iostream>
 #include <map>
 
 std::priority_queue<std::unique_ptr<Node>, std::vector<std::unique_ptr<Node>>,
@@ -91,8 +92,8 @@ Huffman::traverse_tree(const std::unique_ptr<Node> &rootNode) {
 
             // Traverse left (0 bit) and right (1 bit) children
             // Shift code left by 1 bit and add 0 for left, 1 for right
-            traverse(node->getLeft(), code << 1, depth + 1);
-            traverse(node->getRight(), (code << 1) | 1, depth + 1);
+            traverse(node->getLeft(), code * 2, depth + 1);
+            traverse(node->getRight(), code * 2 + 1, depth + 1);
         };
 
     // Start traversal from root with empty code
@@ -101,4 +102,26 @@ Huffman::traverse_tree(const std::unique_ptr<Node> &rootNode) {
     }
 
     return encoding_map;
+}
+
+void Huffman::encode_data(const std::string &input_file_name,
+                          const std::map<char, int> &encoding_map) {
+    std::ofstream out_file("output.bin", std::ios::app | std::ios::binary);
+    std::ifstream input_file;
+    input_file.open(input_file_name);
+
+    if (out_file.is_open()) {
+        char letter;
+        while (input_file.get(letter)) {
+            auto character = encoding_map.find(letter);
+            out_file.write(reinterpret_cast<const char *>(&character->second),
+                           sizeof(character->second));
+        }
+
+        std::cout << "Successfully wrote to output.bin" << std::endl;
+    } else {
+        std::cerr << "Unable to append data to output.bin" << std::endl;
+    }
+    out_file.close();
+    input_file.close();
 }

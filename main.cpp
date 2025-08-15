@@ -33,5 +33,8 @@ int main(int argc, char *argv[]) {
     const std::unique_ptr<Node> &root = queue.top();
     std::map<char, int> encoding_map = Huffman::traverse_tree(root);
 
+    Huffman::encode_data(argv[1], encoding_map);
+
+    inputFile.close();
     return 0;
 }
