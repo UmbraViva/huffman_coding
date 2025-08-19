@@ -74,13 +74,14 @@ void Huffman::generate_tree(
     }
 }
 
-std::map<char, int>
+std::map<char, std::string>
 Huffman::traverse_tree(const std::unique_ptr<Node> &rootNode) {
-    std::map<char, int> encoding_map;
+    std::map<char, std::string> encoding_map;
 
     // Helper function to recursively traverse the tree
-    std::function<void(const std::unique_ptr<Node> &, int, int)> traverse =
-        [&](const std::unique_ptr<Node> &node, int code, int depth) {
+    std::function<void(const std::unique_ptr<Node> &, std::string, int)>
+        traverse = [&](const std::unique_ptr<Node> &node, std::string code,
+                       int depth) {
             if (!node)
                 return;
 
@@ -90,22 +91,20 @@ Huffman::traverse_tree(const std::unique_ptr<Node> &rootNode) {
                 return;
             }
 
-            // Traverse left (0 bit) and right (1 bit) children
-            // Shift code left by 1 bit and add 0 for left, 1 for right
-            traverse(node->getLeft(), code * 2, depth + 1);
-            traverse(node->getRight(), code * 2 + 1, depth + 1);
+            traverse(node->getLeft(), code + "0", depth + 1);
+            traverse(node->getRight(), code + "1", depth + 1);
         };
 
     // Start traversal from root with empty code
     if (rootNode) {
-        traverse(rootNode, 0, 0);
+        traverse(rootNode, "", 0);
     }
 
     return encoding_map;
 }
 
 void Huffman::encode_data(const std::string &input_file_name,
-                          const std::map<char, int> &encoding_map) {
+                          const std::map<char, std::string> &encoding_map) {
     std::ofstream out_file("output.bin", std::ios::app | std::ios::binary);
     std::ifstream input_file;
     input_file.open(input_file_name);
@@ -122,6 +121,7 @@ void Huffman::encode_data(const std::string &input_file_name,
     } else {
         std::cerr << "Unable to append data to output.bin" << std::endl;
     }
+
     out_file.close();
     input_file.close();
 }

@@ -31,8 +31,7 @@ int main(int argc, char *argv[]) {
 
     // Travereses the tree and stores nodes in a map
     const std::unique_ptr<Node> &root = queue.top();
-    std::map<char, int> encoding_map = Huffman::traverse_tree(root);
-
+    std::map<char, std::string> encoding_map = Huffman::traverse_tree(root);
     Huffman::encode_data(argv[1], encoding_map);
 
     inputFile.close();

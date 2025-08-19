@@ -14,7 +14,8 @@ generate_queue(const std::vector<std::string> &letters,
 void generate_tree(std::priority_queue<std::unique_ptr<Node>,
                                        std::vector<std::unique_ptr<Node>>,
                                        CompareNode> &queue);
-std::map<char, int> traverse_tree(const std::unique_ptr<Node> &rootNode);
+std::map<char, std::string>
+traverse_tree(const std::unique_ptr<Node> &rootNode);
 void encode_data(const std::string &inputFile,
-                 const std::map<char, int> &encoding_map);
+                 const std::map<char, std::string> &encoding_map);
 } // namespace Huffman
