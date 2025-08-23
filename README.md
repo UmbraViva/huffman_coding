@@ -1,5 +1,8 @@
 # Huffman Coding
-This is an implementation of the Huffman coding compression algorithm.
+The program was supposed to be an implemintation of the Huffman coding compression algorithm,
+what it actually does is converts the text in an input file into huffman codes and then writes
+them to a file. It's really more of an inflation algorithm I guess... If you have suggestions
+of what I'm doing wrong, let me know.
 
 ## Building and running
 The project uses CMake so you can build the project with that by
@@ -10,12 +13,7 @@ make
 ```
 
 
-You can (at some point) run the following commands to compress files with the -c flag (omit for now)
+You can run the program with
 ```bash
-./huffman_coding -c <file to compress>
-```
-
-To decompress use the -d flat (not implemented yet)
-```bash
-./huffman_coding -d <file to decompress>
+./huffman_coding <file to decompress>
 ```

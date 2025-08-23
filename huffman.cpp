@@ -111,8 +111,12 @@ void Huffman::encode_data(const std::string &input_file_name,
 
     if (out_file.is_open()) {
         char letter;
+        // char *end;
         while (input_file.get(letter)) {
             auto character = encoding_map.find(letter);
+            // long binary_literal = strtol(character->second.c_str(), &end, 2);
+            // out_file.write(reinterpret_cast<const char *>(&binary_literal),
+            // sizeof(binary_literal));
             out_file.write(reinterpret_cast<const char *>(&character->second),
                            sizeof(character->second));
         }
